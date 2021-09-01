@@ -36,7 +36,7 @@ namespace Senai.Rental.WebApi.Controllers
 
             if (clienteBuscado == null)
             {
-                return NotFound("Nenhum cliente encontrado!");
+                return NotFound("Nenhum cliente foi encontrado!");
             }
 
             return Ok(clienteBuscado);
