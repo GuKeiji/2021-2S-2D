@@ -10,8 +10,8 @@ namespace Senai.Rental.WebApi.Repositories
 {
     public class AluguelRepository : IAluguelRepository
     {
-        private string stringConexao = @"Data Source=PC-GAMER-GUKEIJ\SQLEXPRESS; initial catalog=T_Rental; user Id=sa; pwd=senai@132";
-
+        //private string stringConexao = @"Data Source=PC-GAMER-GUKEIJ\SQLEXPRESS; initial catalog=T_Rental; user Id=sa; pwd=senai@132";
+        private string stringConexao = @"Data Source=NOTE0113G2\SQLEXPRESS; initial catalog=T_Rental; user Id=sa; pwd=Senai@132";
         public void AtualizarIdCorpo(AluguelDomain aluguelAtualizado)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
@@ -23,6 +23,7 @@ namespace Senai.Rental.WebApi.Repositories
                     cmd.Parameters.AddWithValue("@dataAluguel", aluguelAtualizado.dataAluguel);
                     cmd.Parameters.AddWithValue("@dataDevolucao", aluguelAtualizado.dataDevolucao);
                     cmd.Parameters.AddWithValue("@idCliente", aluguelAtualizado.idCliente);
+                    cmd.Parameters.AddWithValue("@idAluguel", aluguelAtualizado.idAluguel);
                     con.Open();
 
                     cmd.ExecuteNonQuery();
