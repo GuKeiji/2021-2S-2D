@@ -21,7 +21,8 @@ namespace Senai.Rental.WebApi.Repositories
         /// integrated security=true = Faz autenticação com o usuario do sistema (Windows)
         /// 
         /// </summary>
-        private string stringConexao = @"Data Source=PC-GAMER-GUKEIJ\SQLEXPRESS; initial catalog=T_Rental; user Id=sa; pwd=senai@132";
+        //private string stringConexao = @"Data Source=PC-GAMER-GUKEIJ\SQLEXPRESS; initial catalog=T_Rental; user Id=sa; pwd=senai@132";
+        private string stringConexao = @"Data Source=NOTE0113G2\SQLEXPRESS; initial catalog=T_Rental; user Id=sa; pwd=Senai@132";
         public void AtualizarIdCorpo(ClienteDomain clienteAtualizado)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))

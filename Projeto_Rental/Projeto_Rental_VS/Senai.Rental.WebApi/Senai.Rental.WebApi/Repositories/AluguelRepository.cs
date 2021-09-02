@@ -36,8 +36,23 @@ namespace Senai.Rental.WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectById = "SELECT idAluguel, idCliente, idVeiculo, dataAluguel, dataDevolucao FROM ALUGUEL WHERE idAluguel = @idAluguel";
-
+                string querySelectById = @"SELECT A.dataAluguel, 
+                                                   A.dataDevolucao, 
+	                                               C.nomeCliente, 
+                                                   C.sobrenomeCliente,
+                                                   V.placa,
+	                                               M.nomeModelo,
+	                                               MA.nomeMarca
+                                              FROM ALUGUEL A
+                                             INNER JOIN CLIENTE C
+                                                ON A.idCliente = C.idCliente
+                                             INNER JOIN VEICULO V
+                                                ON A.idVeiculo = V.idVeiculo
+                                             INNER JOIN MODELO M
+                                                ON V.idModelo = M.idModelo
+                                             INNER JOIN MARCA MA
+                                                ON M.idMarca = MA.idMarca
+                                             WHERE idAluguel = @idAluguel";
                 con.Open();
 
                 SqlDataReader rdr;
@@ -51,11 +66,27 @@ namespace Senai.Rental.WebApi.Repositories
                     {
                         AluguelDomain aluguelBuscado = new AluguelDomain
                         {
-                            idAluguel = Convert.ToInt32(rdr[0]),
-                            idCliente = Convert.ToInt32(rdr[1]),
-                            idVeiculo = Convert.ToInt32(rdr[2]),
-                            dataAluguel = Convert.ToDateTime(rdr[3]),
-                            dataDevolucao = Convert.ToDateTime(rdr[4])
+                            dataAluguel = Convert.ToDateTime(rdr[0]),
+                            dataDevolucao = Convert.ToDateTime(rdr[1]),
+
+                            cliente = new ClienteDomain
+                            {
+                                nomeCliente = rdr[2].ToString(),
+                                sobrenomeCliente = rdr[3].ToString()                                
+                            },
+
+                            veiculo = new VeiculoDomain
+                            {
+                                placa = rdr[4].ToString(),
+                                modelo = new ModeloDomain
+                                {
+                                    nomeModelo = rdr[5].ToString(),
+                                    marca = new MarcaDomain
+                                    {
+                                        nomeMarca = rdr[6].ToString()
+                                    }
+                                }
+                            }
                         };
                         return aluguelBuscado;
                     }
@@ -105,7 +136,22 @@ namespace Senai.Rental.WebApi.Repositories
 
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectAll = "SELECT idAluguel, idCliente, idVeiculo, dataAluguel, dataDevolucao FROM ALUGUEL";
+                string querySelectAll = @"SELECT A.dataAluguel, 
+                                                   A.dataDevolucao, 
+	                                               C.nomeCliente, 
+                                                   C.sobrenomeCliente,
+                                                   V.placa,
+	                                               M.nomeModelo,
+	                                               MA.nomeMarca
+                                              FROM ALUGUEL A
+                                             INNER JOIN CLIENTE C
+                                                ON A.idCliente = C.idCliente
+                                             INNER JOIN VEICULO V
+                                                ON A.idVeiculo = V.idVeiculo
+                                             INNER JOIN MODELO M
+                                                ON V.idModelo = M.idModelo
+                                             INNER JOIN MARCA MA
+                                                ON M.idMarca = MA.idMarca";
                 con.Open();
                 SqlDataReader rdr;
 
@@ -117,11 +163,27 @@ namespace Senai.Rental.WebApi.Repositories
                     {
                         AluguelDomain aluguel = new AluguelDomain
                         {
-                            idAluguel = Convert.ToInt32(rdr[0]),
-                            idCliente = Convert.ToInt32(rdr[1]),
-                            idVeiculo = Convert.ToInt32(rdr[2]),
-                            dataAluguel = Convert.ToDateTime(rdr[3]),
-                            dataDevolucao = Convert.ToDateTime(rdr[4])
+                            dataAluguel = Convert.ToDateTime(rdr[0]),
+                            dataDevolucao = Convert.ToDateTime(rdr[1]),
+
+                            cliente = new ClienteDomain
+                            {
+                                nomeCliente = rdr[2].ToString(),
+                                sobrenomeCliente = rdr[3].ToString()
+                            },
+
+                            veiculo = new VeiculoDomain
+                            {
+                                placa = rdr[4].ToString(),
+                                modelo = new ModeloDomain
+                                {
+                                    nomeModelo = rdr[5].ToString(),
+                                    marca = new MarcaDomain
+                                    {
+                                        nomeMarca = rdr[6].ToString()
+                                    }
+                                }
+                            }
                         };
 
                         listaAlugueis.Add(aluguel);

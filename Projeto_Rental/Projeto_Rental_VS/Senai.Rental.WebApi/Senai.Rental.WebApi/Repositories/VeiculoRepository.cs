@@ -12,7 +12,8 @@ namespace Senai.Rental.WebApi.Repositories
     public class VeiculoRepository : IVeiculoRepository
 
     {
-        private string stringConexao = @"Data Source=PC-GAMER-GUKEIJ\SQLEXPRESS; initial catalog=T_Rental; user Id=sa; pwd=senai@132";
+        //private string stringConexao = @"Data Source=PC-GAMER-GUKEIJ\SQLEXPRESS; initial catalog=T_Rental; user Id=sa; pwd=senai@132";
+        private string stringConexao = @"Data Source=NOTE0113G2\SQLEXPRESS; initial catalog=T_Rental; user Id=sa; pwd=Senai@132";
         public void AtualizarIdCorpo(VeiculoDomain veiculolAtualizado)
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
@@ -37,8 +38,18 @@ namespace Senai.Rental.WebApi.Repositories
         {
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectById = "SELECT idVeiculo, idEmpresa, idModelo, placa FROM VEICULO WHERE idVeiculo = @idVeiculo";
-
+                string querySelectById =  @"SELECT E.nomeEmpresa,
+	                                               M.nomeModelo,
+	                                               MA.nomeMarca,
+                                                   V.placa
+                                              FROM VEICULO V
+                                             INNER JOIN EMPRESA E
+                                                ON V.idEmpresa = E.idEmpresa
+                                             INNER JOIN MODELO M
+                                                ON V.idModelo = M.idModelo
+                                             INNER JOIN MARCA MA
+	                                            ON M.idMarca = MA.idMarca
+                                             WHERE idVeiculo = @idVeiculo";
                 con.Open();
 
                 SqlDataReader rdr;
@@ -52,10 +63,19 @@ namespace Senai.Rental.WebApi.Repositories
                     {
                         VeiculoDomain veiculoBuscado = new VeiculoDomain
                         {
-                            idVeiculo = Convert.ToInt32(rdr[0]),
-                            idEmpresa = Convert.ToInt32(rdr[1]),
-                            idModelo = Convert.ToInt32(rdr[2]),
-                            placa = rdr[3].ToString()
+                            placa = rdr[3].ToString(),
+                            empresa = new EmpresaDomain
+                            {
+                                nomeEmpresa = rdr[0].ToString()
+                            },
+                            modelo = new ModeloDomain
+                            {
+                                nomeModelo = rdr[1].ToString(),
+                                marca = new MarcaDomain
+                                {
+                                    nomeMarca = rdr[2].ToString()
+                                }
+                            }
                         };
                         return veiculoBuscado;
                     }
@@ -104,7 +124,17 @@ namespace Senai.Rental.WebApi.Repositories
 
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                string querySelectAll = "SELECT idVeiculo, idEmpresa, idModelo, placa FROM VEICULO";
+                string querySelectAll = @"SELECT E.nomeEmpresa,
+	                                               M.nomeModelo,
+	                                               MA.nomeMarca,
+                                                   V.placa
+                                              FROM VEICULO V
+                                             INNER JOIN EMPRESA E
+                                                ON V.idEmpresa = E.idEmpresa
+                                             INNER JOIN MODELO M
+                                                ON V.idModelo = M.idModelo
+                                             INNER JOIN MARCA MA
+	                                            ON M.idMarca = MA.idMarca";
                 con.Open();
                 SqlDataReader rdr;
 
@@ -116,12 +146,20 @@ namespace Senai.Rental.WebApi.Repositories
                     {
                         VeiculoDomain veiculo = new VeiculoDomain
                         {
-                            idVeiculo = Convert.ToInt32(rdr[0]),
-                            idEmpresa = Convert.ToInt32(rdr[1]),
-                            idModelo = Convert.ToInt32(rdr[2]),
-                            placa = rdr[3].ToString()
+                            placa = rdr[3].ToString(),
+                            empresa = new EmpresaDomain
+                            {
+                                nomeEmpresa = rdr[0].ToString()
+                            },
+                            modelo = new ModeloDomain
+                            {
+                                nomeModelo = rdr[1].ToString(),
+                                marca = new MarcaDomain
+                                {
+                                    nomeMarca = rdr[2].ToString()
+                                }
+                            }
                         };
-
                         listaVeiculos.Add(veiculo);
                     }
                 }
