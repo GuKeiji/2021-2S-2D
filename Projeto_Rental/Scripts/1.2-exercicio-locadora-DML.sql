@@ -33,3 +33,4 @@ GO
 
 --UPDATE CLIENTE SET nomeCliente = 'nomeCliente', sobrenomeCliente = '@' WHERE idCliente = 1;
 --UPDATE CLIENTE SET nomeCliente = 'Jeremias', sobrenomeCliente = 'Carvalho' WHERE idCliente = 1;
+--UPDATE ALUGUEL SET idCliente = @idCliente, idVeiculo = @idVeiculo, dataAluguel = @dataAluguel, dataDevolucao = @dataDevolucao WHERE idAluguel = @idAluguel
